@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .message-box {
+            max-width: 500px !important;
+            text-align: justify;
+        }
+
+        p {
+            margin: 2px;
+        }
+
+        .user {
+            background-color: #ACE1AF;
+        }
+
+        .input {
+            width: 100%;
+            margin-right: 10px !important;
+        }
+
+        .message-container {
+            padding-bottom: 100px;
+            height: calc(100vh - 50px);
+            overflow-y: auto;
+            margin-bottom: 70px;
+        }
+
+        .message-box:last-of-type {
+            margin-bottom: 70px !important;
+        }
+
+        .form {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body style="overflow: hidden;">
+    <div class="w3-bar w3-dark-gray w3-monospace">
+        {%if user.is_authenticated%}
+        <a href="admin/" class="w3-bar-item w3-button w3-large">admin</a>
+        <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-large">logout</a>
+        <a href="#" id="endButton" class="w3-bar-item w3-button w3-large">end</a>
+        {% else %}
+        <a href="{% url 'login' %}" id="endButton" class="w3-bar-item w3-button w3-large">login</a>
+        <a href="{% url 'register' %}" id="endButton" class="w3-bar-item w3-button w3-large">register</a>
+        {% endif %}
+    </div>
+    {%if user.is_authenticated%}
+
+    <div class="message-container">
+
+        {% for message in messages %}
+        <div
+            class="w3-padding w3-round w3-margin message-box w3-monospace {% if message.user == user %}user{% else %}w3-light-gray{% endif %}">
+            <p class="w3-text-red">{{message.user.username}}</p>
+            <p class="w3-text-black">
+                {{message.message}}
+            </p>
+            <p class="w3-text-red">
+                {{message.date|date:"H:i j-F"}}
+            </p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="w3-padding w3-light-gray w3-display-bottomleft form w3-monospace">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" class="input w3-margin w3-padding w3-medium " placeholder="type here..." name="message">
+        </form>
+    </div>
+    {% else %}
+
+    {% endif %}
+
+    <script>
+        // Sahifa yangilanganda skrol pozitsiyasini saqlash
+        window.onload = function () {
+            const messageContainer = document.querySelector('.message-container');
+
+            // Skrol pozitsiyasini saqlash (agar bor bo'lsa)
+            if (localStorage.getItem('scrollPos')) {
+                messageContainer.scrollTop = localStorage.getItem('scrollPos');
+            }
+
+            // Sahifa yangilanganda, oxirgi skrol pozitsiyasini saqlash
+            messageContainer.addEventListener('scroll', function () {
+                localStorage.setItem('scrollPos', messageContainer.scrollTop);
+            });
+        };
+
+        // "end" tugmasi bosilganda sahifa pastga tushishi
+        document.getElementById('endButton').addEventListener('click', function () {
+            const messageContainer = document.querySelector('.message-container');
+            messageContainer.scrollTop = messageContainer.scrollHeight; // Sahifani pastga tushirish
+        });
+    </script>
+</body>
+
+</html>

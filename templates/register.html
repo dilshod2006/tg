@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+
+<body class="">
+    <style>
+        input {
+            width: 100%;
+        }
+
+        button {
+            width: 100%;
+        }
+    </style>
+    <div class="w3-bar w3-dark-gray w3-monospace">
+        <a href="{% url 'login' %}" id="endButton" class="w3-bar-item w3-button w3-large">login</a>
+        <a href="{% url 'register' %}" id="endButton" class="w3-bar-item w3-button w3-large">register</a>
+    </div>
+    <center>
+        <div class="w3-monospace w3-padding" style="margin-top: 20px; max-width: 350px;">
+            <p class="w3-text-dark-gray w3-xxlarge">Register</p>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="username" class="w3-large w3-padding" name="username"><br><br>
+                <input type="password" class="w3-large w3-padding" name="password1" placeholder="password"><br><br>
+                <input type="password" class="w3-large w3-padding" name="password2"
+                    placeholder="confirm password"><br><br>
+                <button type="submit" class="w3-large w3-round w3-btn w3-dark-gray">Submit</button>
+            </form>
+
+        </div>
+    </center>
+
+</body>
+
+</html>
